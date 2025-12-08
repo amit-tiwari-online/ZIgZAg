@@ -1,13 +1,12 @@
-from data_loader import load_data
-from labeler import label_days
-from visualize import plot_price_with_labels, plot_brick_hist
+import pandas as pd
+from src.zigzag import compute_zigzag
+import matplotlib.pyplot as plt
 
-def main():
-    df=load_data("data/sample_data.csv")
-    lab=label_days(df)
-    lab.to_csv("trend_labels.csv",index=False)
-    plot_price_with_labels(df,lab)
-    plot_brick_hist(lab)
+df = pd.read_excel("data/BATS_MSFT_5_1.xlsx")
 
-if __name__=="__main__":
-    main()
+dfz = compute_zigzag(df, pct=5)
+
+plt.plot(dfz["Close"], label="Close")
+plt.plot(dfz["ZigZag"], label="ZigZag")
+plt.legend()
+plt.show()
